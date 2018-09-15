@@ -9,7 +9,7 @@ import mysql.connector
 from RPi import GPIO
 import pprint
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
-RasNum = 7
+RasNum = 1
 
 
 def calcDistance(data,number):
@@ -26,7 +26,6 @@ def calcDistance(data,number):
 
 def calcTime(dt,data):
     oldTime=data[0][u'時間']
-    dt=datetime.datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
     delta=dt-oldTime
     delta=delta.total_seconds()
     return delta/3600
@@ -55,7 +54,7 @@ class MyCardReader(object):
         finally:
             clf.close()
 
-def main(ids_csv_filename):
+def main():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(17,GPIO.OUT) #Red
     GPIO.setup(27,GPIO.OUT) #Green
@@ -66,7 +65,7 @@ def main(ids_csv_filename):
     print "Started idm_reader !!!"
     cr = MyCardReader()
     connect = mysql.connector.connect(user='user1', password='octo', host='localhost', database='ikiiki', charset='utf8')
-    cursor = connect.cursor(dictionary=True,buffered=True)
+    cursor = connect.cursor(buffered=True,dictionary=True)
     
     while True:
 #        print "touch card:"
@@ -75,19 +74,21 @@ def main(ids_csv_filename):
 #        print "released"
 #        print cr.idm
         # select
-        cursor.execute('SELECT * FROM `ikiiki` WHERE `ID` = '+str(idm_dec)+' ORDER BY `時間` DESC')
+        stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
+        cursor.execute(stmt,(idm_dec,))
+
         row = cursor.fetchmany(2)
         for i in row:
             l=pprint.pformat(i)
             print (l.decode('unicode-escape'))
         cursor.close()
-        connect.close()
         
         #calculation Distance.
-        distance=calcDistance(row,1)
+        distance=calcDistance(row,RasNum)
         print("distance: "+str(distance))
 
-        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.datetime.now()
+        time = now.strftime('%Y-%m-%d %H:%M:%S')
         hours=calcTime(now,row)
         print("hours: "+str(hours))
         counts=row[0][u'回数']
@@ -105,7 +106,21 @@ def main(ids_csv_filename):
         totalCalories=row[0][u'総消費カロリー']+kcal
         print ("totalCalories: "+str(totalCalories))
 
-        
+        height=row[0][u'身長']
+        weight=row[0][u'体重']
+        age=row[0][u'年齢']
+        sex=row[0][u'性別']
+
+        try:
+            cur=connect.cursor(prepared=True)
+            insert='INSERT INTO ikiiki(ID,時間,距離,消費カロリー,総運動時間,総移動距離,総消費カロリー,端末番号,回数,身長,体重,年齢,性別) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);'
+
+            cur.execute(insert,(str(idm_dec),time,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
+            connect.commit()
+            connect.close()
+        except:
+            connect.rollback()
+            raise
 
 
         #with open(ids_csv_filename, 'a') as ids_csv_file:   #csv open
@@ -128,4 +143,4 @@ def main(ids_csv_filename):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()
