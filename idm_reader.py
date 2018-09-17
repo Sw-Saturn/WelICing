@@ -5,10 +5,14 @@ import serial
 import nfc
 import sys
 import time
+import random
 import datetime
 import mysql.connector
 from RPi import GPIO
+from dateutil.relativedelta import relativedelta
 import pprint
+import pickle
+
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
 RasNum =1 
 
@@ -62,9 +66,13 @@ def main():
     GPIO.output(17,0)       #LEDoff
     GPIO.output(27,0)
     GPIO.output(22,0)
+    with open('message.pickle','rb')as p:
+        messageList=pickle.load(p)
     #print "Started idm_reader !!!"
     cr = MyCardReader()
     while True:
+        with open('speed.pickle','rb')as f:
+            basedSpeed=pickle.load(f)
         #print "touch card:"
         cr.read_id()
         idm_dec=int(cr.idm,16)
@@ -124,7 +132,13 @@ def main():
         try:
             cur=connect.cursor(prepared=True)
             insert='INSERT INTO ikiiki(ID,時間,距離,消費カロリー,総運動時間,総移動距離,総消費カロリー,端末番号,回数,身長,体重,年齢,性別) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);'
-            if (distance/hours)<1:
+            
+            
+            basedSpeed+=((distance/hours)-basedSpeed)/10
+            with open('speed.pickle','wb')as f:
+                pickle.dump(basedSpeed,f)
+            print basedSpeed
+            if (distance/hours)<basedSpeed:
                 totalHours=totalHours-hours
                 totalCalories=totalCalories-kcal
                 counts=counts-1
@@ -146,20 +160,15 @@ def main():
             GPIO.output(22,0)
             raise
         if RasNum==1:
+            s=serial.Serial("/dev/ttyUSB0",9600)
             nowtime=datetime.datetime.now().strftime('%Y年%m月%d日%H時%M分%S秒')
-            totalSeconds=totalHours*3600
-            totalSeconds=totalSeconds%3600
-            totalMinutes=totalSeconds/60
-            totalSeconds=totalMinutes%60
-            
 
-            totalTimes='{0}時間{1}分{2}秒'.format(totalHours,totalMinutes,totalSeconds)
+            totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours))
 
             printStr='{0},{1},{2:.2f},{3:.2f},{4},{5:.2f},{6:.2f},{7}'
-            message='FF外から失礼するゾ～（謝罪） このツイート面白スギィ！！！！！自分、RTいいっすか？ 淫夢知ってそうだから淫夢のリストにぶち込んでやるぜー いきなりリプしてすみません！許してください！なんでもしますから！(なんでもするとは言ってない)'
-            #print
-            s=serial.Serial("/dev/ttyUSB0",9600)
-            time.sleep(2)
+            message=random.choice(messageList).encode('utf-8')
+            time.sleep(1.8)
+
             print type(nowtime)
             printStr=printStr.format(nowtime,idm_dec,distance,kcal,totalTimes,totalDistance,totalCalories,message)
             print printStr
