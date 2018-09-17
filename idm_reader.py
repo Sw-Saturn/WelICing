@@ -14,7 +14,7 @@ import pprint
 import pickle
 
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
-RasNum =1 
+RasNum = 1
 
 def calcDistance(data,number):
     new=data[0][u'距離']
@@ -27,6 +27,20 @@ def calcDistance(data,number):
     elif sum==5:
         return 0.35
     return 0
+
+def custom_round(number, ndigits=0):
+    if type(number) == int:#整数ならそのまま返す
+        return number
+    d_point = len(str(number).split('.')[1])#小数点以下が何桁あるか定義
+    if ndigits >= d_point:#求める小数点以下の値が引数より大きい場合はそのまま返す
+        return number
+    c = (10 ** d_point) * 2
+    #小数点以下の桁数分元の数に0を足して整数にして2倍するための値(0.01ならcは200)
+    return round((number * c + 1) / c, ndigits)
+    #元の数に0を足して整数にして2倍して1を足して2で割る。元の数が0.01なら0.015にしてroundを行う
+
+def format_float(num):
+        return ('%i' if num == int(num) else '%s') % num
 
 def calcTime(dt,data):
     oldTime=data[0][u'時間']
@@ -77,6 +91,8 @@ def main():
         cr.read_id()
         idm_dec=int(cr.idm,16)
         print idm_dec
+        with open('idm.txt','w') as writeIDm:
+            writeIDm.write(str(idm_dec))
         #print "released"
         #print cr.idm
         #host=ik1-333-26548.vs.sakura.ne.jp
@@ -163,14 +179,17 @@ def main():
             s=serial.Serial("/dev/ttyUSB0",9600)
             nowtime=datetime.datetime.now().strftime('%Y年%m月%d日%H時%M分%S秒')
 
-            totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours))
+            totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours).normalized())
 
-            printStr='{0},{1},{2:.2f},{3:.2f},{4},{5:.2f},{6:.2f},{7}'
+            printStr='{0},{1},{2},{3},{4},{5},{6},{7}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.8)
-
+            distance=custom_round(distance,2)
+            kcal=custom_round(kcal,2)
+            totalDistance=custom_round(totalDistance,2)
+            totalCalories=custom_round(totalCalories,2)
             print type(nowtime)
-            printStr=printStr.format(nowtime,idm_dec,distance,kcal,totalTimes,totalDistance,totalCalories,message)
+            printStr=printStr.format(nowtime,idm_dec,format_float(distance),format_float(kcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
             print printStr
             s.write(printStr)
             s.close()
