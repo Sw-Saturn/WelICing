@@ -54,6 +54,8 @@ def calcCalories(time,dist,data):
     #print ("weight: "+str(weight))
     cal=(0.1451*speed*speed-0.6804*speed+3.4571)*weight*time*1.05
     return cal
+
+
 class MyCardReader(object):
 
     def on_connect(self, tag):
