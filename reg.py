@@ -14,7 +14,7 @@ import pprint
 import pickle
 
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
-RasNum = 1
+RasNum = 2
 
 def calcDistance(data,number):
     new=data[0][u'距離']
@@ -102,69 +102,69 @@ def main():
         cursor = connect.cursor(buffered=True,dictionary=True)
 
         # select
-        stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
-        cursor.execute(stmt,(idm_dec,))
+        #stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
+        #cursor.execute(stmt,(idm_dec,))
 
-        row = cursor.fetchmany(2)
+        #row = cursor.fetchmany(2)
         #for i in row:
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
-        cursor.close()
-        if RasNum==row[0][u'端末番号']:
-            GPIO.output(17,1)
-            time.sleep(0.8)
-            GPIO.output(17,0)
-            connect.close()
-            if idm_dec==finIDm:
-                break
-            continue
+        #cursor.close()
+        #if RasNum==row[0][u'端末番号']:
+        #    GPIO.output(17,1)
+        #    time.sleep(0.8)
+        #    GPIO.output(17,0)
+        #    connect.close()
+        #    if idm_dec==finIDm:
+        #        break
+        #    continue
 
         #calculation Distance.
-        distance=calcDistance(row,RasNum)
-        print("distance: "+str(distance))
+        #distance=calcDistance(row,RasNum)
+        #print("distance: "+str(distance))
 
         now = datetime.datetime.now()
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
-        hours=calcTime(now,row)
+        #hours=calcTime(now,row)
         #print("hours: "+str(hours))
-        counts=row[0][u'回数']
-        counts=counts+1
+        #counts=row[0][u'回数']
+        #counts=counts+1
 
-        kcal=calcCalories(hours,distance,row)
+        #kcal=calcCalories(hours,distance,row)
         #print ("calories: "+str(kcal))
         #print distance/hours
-        totalHours=row[0][u'総運動時間']+hours
+        #totalHours=row[0][u'総運動時間']+hours
         #print ("totalHours: "+str(totalHours))
-        cardNumber=row[0]['CardNum']
-        totalDistance=row[0][u'総移動距離']+distance
+
+        #totalDistance=row[0][u'総移動距離']+distance
         #print ("totalDistance: "+str(totalDistance))
         
-        totalCalories=row[0][u'総消費カロリー']+kcal
+        #totalCalories=row[0][u'総消費カロリー']+kcal
         #print ("totalCalories: "+str(totalCalories))
 
-        height=row[0][u'身長']
-        weight=row[0][u'体重']
-        age=row[0][u'年齢']
-        sex=row[0][u'性別']
+        #height=row[0][u'身長']
+        #weight=row[0][u'体重']
+        #age=row[0][u'年齢']
+        #sex=row[0][u'性別']
 
         try:
             cur=connect.cursor(prepared=True)
-            insert='INSERT INTO ikiiki(ID,CardNum,時間,距離,消費カロリー,総運動時間,総移動距離,総消費カロリー,端末番号,回数,身長,体重,年齢,性別) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            insert='INSERT INTO ikiiki(ID,時間,距離,消費カロリー,総運動時間,総移動距離,総消費カロリー,端末番号,回数,身長,体重,年齢,性別) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);'
             
             
-            basedSpeed+=((distance/hours)-basedSpeed)/10
-            with open('speed.pickle','wb')as f:
-                pickle.dump(basedSpeed,f)
-            print basedSpeed
-            if (distance/hours)<basedSpeed:
-                totalHours=totalHours-hours
-                totalCalories=totalCalories-kcal
-                counts=counts-1
-                totalDistance=totalDistance-distance
-                distance=0
-                kcal=0
+            #basedSpeed+=((distance/hours)-basedSpeed)/10
+            #with open('speed.pickle','wb')as f:
+            #    pickle.dump(basedSpeed,f)
+            #print basedSpeed
+            #if (distance/hours)<basedSpeed:
+            #    totalHours=totalHours-hours
+            #    totalCalories=totalCalories-kcal
+            #    counts=counts-1
+            #    totalDistance=totalDistance-distance
+            #    distance=0
+            #    kcal=0
 
-            cur.execute(insert,(str(idm_dec),str(cardNumber),nowtime,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
+            cur.execute(insert,(str(idm_dec),nowtime,str(0),str(0),str(0),str(0),str(0),str(1),str(0),str(1.7),str(60),str(55),'Unisex'))
             connect.commit()
             cursor.close()
             connect.close()
@@ -183,7 +183,7 @@ def main():
 
             totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours).normalized())
 
-            printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7}'
+            printStr='{0},{1},{2},{3},{4},{5},{6},{7}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.8)
             distance=custom_round(distance,2)
@@ -191,7 +191,7 @@ def main():
             totalDistance=custom_round(totalDistance,2)
             totalCalories=custom_round(totalCalories,2)
             print type(nowtime)
-            printStr=printStr.format(nowtime,cardNumber,format_float(distance),format_float(kcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
+            printStr=printStr.format(nowtime,idm_dec,format_float(distance),format_float(kcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
             print printStr
             s.write(printStr)
             s.close()
