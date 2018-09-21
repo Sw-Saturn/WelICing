@@ -26,6 +26,12 @@ def calcDistance(data,number):
         return 1.1
     elif sum==5:
         return 0.35
+    elif sum==6:
+        return 2.1
+    elif sum==7:
+        return 1.3
+    elif sum==8:
+        return 1
     return 0
 
 def custom_round(number, ndigits=0):
