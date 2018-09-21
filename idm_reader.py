@@ -104,7 +104,7 @@ def main():
         #print "released"
         #print cr.idm
         #host=ik1-333-26548.vs.sakura.ne.jp
-        connect = mysql.connector.connect(user='user1', password='octo', host='ras1.local', database='ikiiki', charset='utf8')
+        connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.194.52', database='ikiiki', charset='utf8')
         cursor = connect.cursor(buffered=True,dictionary=True)
 
         # select
