@@ -93,15 +93,15 @@ def main():
     #print "Started idm_reader !!!"
     cr = MyCardReader()
     while True:
-        with open('speed.pickle','rb')as f:
-            basedSpeed=pickle.load(f)
+        #with open('speed.pickle','rb')as f:
+        #    basedSpeed=pickle.load(f)
         #print "touch card:"
         cr.read_id()
         idm_dec=int(cr.idm,16)
         print idm_dec
         with open('idm.txt','w') as writeIDm:
             writeIDm.write(str(idm_dec))
-        #print "released"
+        print "released"
         #print cr.idm
         #host=ik1-333-26548.vs.sakura.ne.jp
         connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.194.52', database='ikiiki', charset='utf8')
@@ -112,9 +112,9 @@ def main():
         cursor.execute(stmt,(idm_dec,))
 
         row = cursor.fetchmany(2)
-        #for i in row:
-        #    l=pprint.pformat(i)
-        #    print (l.decode('unicode-escape'))
+        for i in row:
+            l=pprint.pformat(i)
+            print (l.decode('unicode-escape'))
         cursor.close()
         if RasNum==row[0][u'端末番号']:
             GPIO.output(17,1)
@@ -158,17 +158,17 @@ def main():
             insert='INSERT INTO ikiiki(ID,CardNum,時間,距離,消費カロリー,総運動時間,総移動距離,総消費カロリー,端末番号,回数,身長,体重,年齢,性別) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
             
             
-            basedSpeed+=((distance/hours)-basedSpeed)/10
-            with open('speed.pickle','wb')as f:
-                pickle.dump(basedSpeed,f)
-            print basedSpeed
-            if (distance/hours)<basedSpeed:
-                totalHours=totalHours-hours
-                totalCalories=totalCalories-kcal
-                counts=counts-1
-                totalDistance=totalDistance-distance
-                distance=0
-                kcal=0
+            #basedSpeed+=((distance/hours)-basedSpeed)/10
+            #with open('speed.pickle','wb')as f:
+            #    pickle.dump(basedSpeed,f)
+            #print basedSpeed
+            #if (distance/hours)<basedSpeed:
+            #    totalHours=totalHours-hours
+            #    totalCalories=totalCalories-kcal
+            #    counts=counts-1
+            #    totalDistance=totalDistance-distance
+            #    distance=0
+            #    kcal=0
 
             cur.execute(insert,(str(idm_dec),str(cardNumber),nowtime,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
             connect.commit()
