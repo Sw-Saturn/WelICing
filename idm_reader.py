@@ -112,9 +112,9 @@ def main():
         cursor.execute(stmt,(idm_dec,))
 
         row = cursor.fetchmany(2)
-        for i in row:
-            l=pprint.pformat(i)
-            print (l.decode('unicode-escape'))
+        #for i in row:
+        #    l=pprint.pformat(i)
+        #    print (l.decode('unicode-escape'))
         cursor.close()
         if RasNum==row[0][u'端末番号']:
             GPIO.output(17,1)
@@ -162,13 +162,13 @@ def main():
             #with open('speed.pickle','wb')as f:
             #    pickle.dump(basedSpeed,f)
             #print basedSpeed
-            #if (distance/hours)<basedSpeed:
-            #    totalHours=totalHours-hours
-            #    totalCalories=totalCalories-kcal
-            #    counts=counts-1
-            #    totalDistance=totalDistance-distance
-            #    distance=0
-            #    kcal=0
+            if hours>1:
+                totalHours=totalHours-hours
+                totalCalories=totalCalories-kcal
+                counts=counts-1
+                totalDistance=totalDistance-distance
+                distance=0
+                kcal=0
 
             cur.execute(insert,(str(idm_dec),str(cardNumber),nowtime,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
             connect.commit()
