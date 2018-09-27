@@ -68,6 +68,7 @@ class MyCardReader(object):
         #print "touched"
         self.idm = binascii.hexlify(tag.idm)
         # LED
+        GPIO.output(17,0)
         GPIO.output(22,1)   #BlueLEDon
         time.sleep(0.5)
         GPIO.output(22,0)
@@ -85,14 +86,17 @@ def main():
     GPIO.setup(17,GPIO.OUT) #Red
     GPIO.setup(27,GPIO.OUT) #Green
     GPIO.setup(22,GPIO.OUT) #Blue
-    GPIO.output(17,0)       #LEDoff
-    GPIO.output(27,0)
+    GPIO.output(17,1)
+    GPIO.output(27,1)
     GPIO.output(22,0)
     with open('message.pickle','rb')as p:
-        messageList=pickle.load(p)
+        message=pickle.load(p)
     #print "Started idm_reader !!!"
     cr = MyCardReader()
     while True:
+        GPIO.output(17,1)
+        GPIO.output(27,1)
+        GPIO.output(22,0)
         #with open('speed.pickle','rb')as f:
         #    basedSpeed=pickle.load(f)
         #print "touch card:"
@@ -132,7 +136,7 @@ def main():
         now = datetime.datetime.now()
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
         hours=calcTime(now,row)
-        #print("hours: "+str(hours))
+        print("hours: "+str(hours))
         counts=row[0][u'回数']
         counts=counts+1
 
