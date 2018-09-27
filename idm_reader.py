@@ -69,6 +69,7 @@ class MyCardReader(object):
         self.idm = binascii.hexlify(tag.idm)
         # LED
         GPIO.output(17,0)
+        GPIO.output(27,0)
         GPIO.output(22,1)   #BlueLEDon
         time.sleep(0.5)
         GPIO.output(22,0)
