@@ -91,7 +91,7 @@ def main():
     GPIO.output(27,1)
     GPIO.output(22,0)
     with open('message.pickle','rb')as p:
-        message=pickle.load(p)
+        messageList=pickle.load(p)
     #print "Started idm_reader !!!"
     cr = MyCardReader()
     while True:
@@ -122,6 +122,14 @@ def main():
         #    print (l.decode('unicode-escape'))
         cursor.close()
         if RasNum==row[0][u'端末番号']:
+            GPIO.output(17,1)
+            time.sleep(0.2)
+            GPIO.output(17,0)
+            time.sleep(0.2)
+            GPIO.output(17,1)
+            time.sleep(0.2)
+            GPIO.output(17,0)
+            time.sleep(0.2)
             GPIO.output(17,1)
             time.sleep(0.8)
             GPIO.output(17,0)
