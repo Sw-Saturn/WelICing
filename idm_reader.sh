@@ -1,2 +1,3 @@
 #!/bin/sh
-/usr/bin/python /home/pi/procon29/idm_reader.py
+bundle exec guard
+/usr/bin/python /home/pi/procon29/FelicaReader/idm_reader.py

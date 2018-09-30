@@ -197,14 +197,14 @@ def main():
             GPIO.output(22,0)
             raise
         if RasNum==1:
-            s=serial.Serial("/dev/ttyUSB0",9600)
+            s=serial.Serial("/dev/ttyUSB0",38400)
             nowtime=datetime.datetime.now().strftime('%Y年%m月%d日%H時%M分%S秒')
 
             totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours).normalized())
 
             printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7}'
             message=random.choice(messageList).encode('utf-8')
-            time.sleep(1.8)
+            time.sleep(1.7)
             distance=custom_round(distance,2)
             kcal=custom_round(kcal,2)
             totalDistance=custom_round(totalDistance,2)
