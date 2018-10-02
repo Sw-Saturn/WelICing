@@ -8,6 +8,7 @@ import time
 import random
 import datetime
 import mysql.connector
+import numpy as np
 from RPi import GPIO
 from dateutil.relativedelta import relativedelta
 import pprint
@@ -137,10 +138,20 @@ def main():
             if idm_dec==finIDm:
                 break
             continue
-
+        cursor.execute('select * from `ikiiki` where `ID` = %s and date(`時間`)=curdate() order by `時間｀ DESC',(idm_dec,))
+        today=cursor.fetchall()
+        
+        cursor.execute('select * from `ikiiki` where `ID` = %s and yearweek(now(),1)=yearweek(`時間`,1) order by `時間｀ DESC',(idm_dec,))
+        thisweek=cursor.fetchall()
         #calculation Distance.
         distance=calcDistance(row,RasNum)
-        print("distance: "+str(distance))
+        todayData=np.sum(today,axis=1)
+        todayDistance=todayData[3]
+        thisweekData=np.sum(thisweek,axis=1)
+        thisweekDistance=thisweekData[3]
+
+        print("today's distance: "+str(todayDistance))
+        print("distance thisweek: "+str(thisweekDistance))
 
         now = datetime.datetime.now()
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -150,16 +161,20 @@ def main():
         counts=counts+1
 
         kcal=calcCalories(hours,distance,row)
-        #print ("calories: "+str(kcal))
+        todaykcal=todayData[4]
+        thisweekkcal=thisweekData[4]
+        print ("today's calories: "+str(todaykcal))
+        print("calories thisweek: "+str(thisweekkcal))
+
         #print distance/hours
         totalHours=row[0][u'総運動時間']+hours
         #print ("totalHours: "+str(totalHours))
         cardNumber=row[0]['CardNum']
         totalDistance=row[0][u'総移動距離']+distance
-        #print ("totalDistance: "+str(totalDistance))
+        print ("totalDistance: "+str(totalDistance))
         
         totalCalories=row[0][u'総消費カロリー']+kcal
-        #print ("totalCalories: "+str(totalCalories))
+        print ("totalCalories: "+str(totalCalories))
 
         height=row[0][u'身長']
         weight=row[0][u'体重']
@@ -205,12 +220,14 @@ def main():
             printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
-            distance=custom_round(distance,2)
-            kcal=custom_round(kcal,2)
+            todayDistance=custom_round(todayDisatance,2)
+            todaykcal=custom_round(todaykcal,2)
+            thisweekDistance=custom_round(thisweekDistance,2)
+            thisweekkcal=custom_round(thisweekkcal,2)
             totalDistance=custom_round(totalDistance,2)
             totalCalories=custom_round(totalCalories,2)
             print type(nowtime)
-            printStr=printStr.format(nowtime,cardNumber,format_float(distance),format_float(kcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
+            printStr=printStr.format(nowtime,cardNumber,format_float(todayDistance),format_float(todaykcal),format_float(thisweekDistance),format_float(thisweekkcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
             print printStr
             s.write(printStr)
             s.close()
