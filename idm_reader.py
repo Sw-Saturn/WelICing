@@ -121,7 +121,7 @@ def main():
         #for i in row:
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
-        cursor.close()
+        #cursor.close()
         if RasNum==row[0][u'端末番号']:
             GPIO.output(17,1)
             time.sleep(0.2)
@@ -138,18 +138,30 @@ def main():
             if idm_dec==finIDm:
                 break
             continue
-        cursor.execute('select * from `ikiiki` where `ID` = %s and date(`時間`)=curdate() order by `時間｀ DESC',(idm_dec,))
+        cursor.execute('select `距離`,`消費カロリー` from `ikiiki` where `ID` = %s and date(`時間`)=curdate() order by `時間` DESC',(idm_dec,))
         today=cursor.fetchall()
         
-        cursor.execute('select * from `ikiiki` where `ID` = %s and yearweek(now(),1)=yearweek(`時間`,1) order by `時間｀ DESC',(idm_dec,))
+        #for i in today:
+        #    l=pprint.pformat(i)
+        #    print(l.decode('unicode-escape'))
+
+        cursor.execute('select `距離`,`消費カロリー` from `ikiiki` where `ID` = %s and yearweek(now(),1)=yearweek(`時間`,1) order by `時間` DESC',(idm_dec,))
         thisweek=cursor.fetchall()
+        cursor.close()
+
         #calculation Distance.
         distance=calcDistance(row,RasNum)
-        todayData=np.sum(today,axis=1)
-        todayDistance=todayData[3]
-        thisweekData=np.sum(thisweek,axis=1)
-        thisweekDistance=thisweekData[3]
-
+        #todayData=sum(today)
+        todayDistanceList=list(map(lambda x:x[u'距離'],today))
+        todayDistance=sum(todayDistanceList)+distance
+        print todayDistance
+        #todayDistance=sum(today[0])
+        #thisweekData=sum(thisweek)
+        thisweekDistanceList=list(map(lambda x:x[u'距離'],thisweek))
+        thisweekDistance=sum(thisweekDistanceList)+distance
+        print thisweekDistance
+        todayDistance+=distance
+        thisweekDistance+=distance
         print("today's distance: "+str(todayDistance))
         print("distance thisweek: "+str(thisweekDistance))
 
@@ -161,8 +173,13 @@ def main():
         counts=counts+1
 
         kcal=calcCalories(hours,distance,row)
-        todaykcal=todayData[4]
-        thisweekkcal=thisweekData[4]
+        todaykcalList=list(map(lambda x:x[u'消費カロリー'],today))
+        thisweekkcalList=list(map(lambda x:x[u'消費カロリー'],thisweek))
+        todaykcal=sum(todaykcalList)+kcal
+        thisweekkcal=sum(thisweekkcalList)+kcal
+
+        todaykcal+=kcal
+        thisweekkcal+=kcal
         print ("today's calories: "+str(todaykcal))
         print("calories thisweek: "+str(thisweekkcal))
 
@@ -202,6 +219,10 @@ def main():
             connect.commit()
             cursor.close()
             connect.close()
+            GPIO.output(27,1)
+            time.sleep(0.4)
+            GPIO.output(27,0)
+            time.sleep(0.2)
             GPIO.output(27,1) #Green LED on.
             time.sleep(0.8)
             GPIO.output(27,0)
@@ -217,10 +238,10 @@ def main():
 
             totalTimes='{0.hours}時間{0.minutes}分{0.seconds}秒'.format(relativedelta(hours=totalHours).normalized())
 
-            printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7}'
+            printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7},{8},{9}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
-            todayDistance=custom_round(todayDisatance,2)
+            todayDistance=custom_round(todayDistance,2)
             todaykcal=custom_round(todaykcal,2)
             thisweekDistance=custom_round(thisweekDistance,2)
             thisweekkcal=custom_round(thisweekkcal,2)
