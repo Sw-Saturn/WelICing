@@ -149,6 +149,8 @@ def main():
         todayDistance=todayData[3]
         thisweekData=np.sum(thisweek,axis=1)
         thisweekDistance=thisweekData[3]
+        todayDistance+=distance
+        thisweekDistance+=distance
 
         print("today's distance: "+str(todayDistance))
         print("distance thisweek: "+str(thisweekDistance))
@@ -163,6 +165,9 @@ def main():
         kcal=calcCalories(hours,distance,row)
         todaykcal=todayData[4]
         thisweekkcal=thisweekData[4]
+        todaykcal+=kcal
+        thisweekkcal+=kcal
+
         print ("today's calories: "+str(todaykcal))
         print("calories thisweek: "+str(thisweekkcal))
 
