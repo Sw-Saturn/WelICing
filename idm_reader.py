@@ -122,22 +122,6 @@ def main():
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
         #cursor.close()
-        if RasNum==row[0][u'端末番号']:
-            GPIO.output(17,1)
-            time.sleep(0.2)
-            GPIO.output(17,0)
-            time.sleep(0.2)
-            GPIO.output(17,1)
-            time.sleep(0.2)
-            GPIO.output(17,0)
-            time.sleep(0.2)
-            GPIO.output(17,1)
-            time.sleep(0.8)
-            GPIO.output(17,0)
-            connect.close()
-            if idm_dec==finIDm:
-                break
-            continue
         cursor.execute('select `距離`,`消費カロリー` from `ikiiki` where `ID` = %s and date(`時間`)=curdate() order by `時間` DESC',(idm_dec,))
         today=cursor.fetchall()
         
@@ -169,6 +153,24 @@ def main():
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
         hours=calcTime(now,row)
         print("hours: "+str(hours))
+        if hours<1:
+            if RasNum==row[0][u'端末番号']:
+                GPIO.output(17,1)
+                time.sleep(0.2)
+                GPIO.output(17,0)
+                time.sleep(0.2)
+                GPIO.output(17,1)
+                time.sleep(0.2)
+                GPIO.output(17,0)
+                time.sleep(0.2)
+                GPIO.output(17,1)
+                time.sleep(0.8)
+                GPIO.output(17,0)
+                connect.close()
+                if idm_dec==finIDm:
+                    break
+                continue
+
         counts=row[0][u'回数']
         counts=counts+1
 
