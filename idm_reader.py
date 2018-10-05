@@ -117,6 +117,7 @@ def main():
         stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
         cursor.execute(stmt,(idm_dec,))
 
+        zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
         row = cursor.fetchmany(2)
         #for i in row:
         #    l=pprint.pformat(i)
