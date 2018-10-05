@@ -116,9 +116,10 @@ def main():
         # select
         stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
         cursor.execute(stmt,(idm_dec,))
-
-        zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
         row = cursor.fetchmany(2)
+        zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
+        crusor.execute(zero,(idm_dec,))
+        zero=cursor.fetchone()
         #for i in row:
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
