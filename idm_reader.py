@@ -193,7 +193,13 @@ def main():
         cardNumber=row[0]['CardNum']
         totalDistance=row[0][u'総移動距離']+distance
         print ("totalDistance: "+str(totalDistance))
-        
+
+        if hours<1:
+            zeroDistance=totalDistance-zero[0][u'総移動距離']
+            print("zero distance: "+str(zeroDistance))
+        else:
+            zeroDistance=0
+
         totalCalories=row[0][u'総消費カロリー']+kcal
         print ("totalCalories: "+str(totalCalories))
 
@@ -245,11 +251,11 @@ def main():
             printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7},{8},{9}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
-            todayDistance=custom_round(todayDistance,2)
+            todayDistance=custom_round(todayDistance+zeroDistance,2)
             todaykcal=custom_round(todaykcal,2)
-            thisweekDistance=custom_round(thisweekDistance,2)
+            thisweekDistance=custom_round(thisweekDistance+zeroDistance,2)
             thisweekkcal=custom_round(thisweekkcal,2)
-            totalDistance=custom_round(totalDistance,2)
+            totalDistance=custom_round(totalDistance+zeroDistance,2)
             totalCalories=custom_round(totalCalories,2)
             print type(nowtime)
             printStr=printStr.format(nowtime,cardNumber,format_float(todayDistance),format_float(todaykcal),format_float(thisweekDistance),format_float(thisweekkcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
