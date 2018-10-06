@@ -118,12 +118,15 @@ def main():
         cursor.execute(stmt,(idm_dec,))
         row = cursor.fetchmany(2)
         zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
-        crusor.execute(zero,(idm_dec,))
+        cursor.execute(zero,(idm_dec,))
         zero=cursor.fetchone()
         #for i in row:
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
         #cursor.close()
+#        for i in zero:
+#            l=pprint.pformat(i)
+#            print(l.decode('unicode-escape'))
         cursor.execute('select `距離`,`消費カロリー` from `ikiiki` where `ID` = %s and date(`時間`)=curdate() order by `時間` DESC',(idm_dec,))
         today=cursor.fetchall()
         
@@ -195,7 +198,7 @@ def main():
         print ("totalDistance: "+str(totalDistance))
 
         if hours<1:
-            zeroDistance=totalDistance-zero[0][u'総移動距離']
+            zeroDistance=totalDistance-zero[u'総移動距離']
             print("zero distance: "+str(zeroDistance))
         else:
             zeroDistance=0
@@ -251,9 +254,11 @@ def main():
             printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7},{8},{9}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
-            todayDistance=custom_round(todayDistance+zeroDistance,2)
+            todayDistance
+            todayDistance=custom_round(todayDistance,2)
             todaykcal=custom_round(todaykcal,2)
-            thisweekDistance=custom_round(thisweekDistance+zeroDistance,2)
+            thisweekDistance
+            thisweekDistance=custom_round(thisweekDistance,2)
             thisweekkcal=custom_round(thisweekkcal,2)
             totalDistance=custom_round(totalDistance+zeroDistance,2)
             totalCalories=custom_round(totalCalories,2)
