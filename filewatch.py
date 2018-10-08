@@ -22,6 +22,7 @@ class ChangeHandler(FileSystemEventHandler):
         print('%sを変更しました' % filename)
         #subprocess.call("sudo pkill chomium",shell=True)
         #time.sleep(1)
+        #subprocess.call("php /var/www/html/2018_procon_wellness/data_download_S.php",shell=True)
         #subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
         print('lunched')
         #time.sleep(15)

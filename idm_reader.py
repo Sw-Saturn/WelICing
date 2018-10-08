@@ -3,8 +3,10 @@
 import binascii
 import serial
 import nfc
+import subprocess
 import sys
 import time
+
 import random
 import datetime
 import mysql.connector
@@ -13,10 +15,11 @@ from RPi import GPIO
 from dateutil.relativedelta import relativedelta
 import pprint
 import pickle
-import csv
+import unicodecsv as csv
 
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
 RasNum = 1
+
 
 def calcDistance(data,number):
     new=data[0][u'距離']
@@ -111,22 +114,30 @@ def main():
         print "released"
         #print cr.idm
         #host=ik1-333-26548.vs.sakura.ne.jp
+        subprocess.call("php /var/www/html/2018_procon_wellness/data_download.php",shell=True)
+        subprocess.call("sudo cp /home/pi/procon29/FelicaReader/data.csv /var/www/html/2018_procon_wellness/data.csv",shell=True)
         connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.194.52', database='ikiiki', charset='utf8')
         cursor = connect.cursor(buffered=True,dictionary=True)
-
+        #csvCur=connect.cursor(buffered=True)
         # select
         stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
         
         cursor.execute(stmt,(idm_dec,))
+        
+        #csvCur.execute(stmt,(idm_dec,))
         row = cursor.fetchmany(2)
+        #csvRow=csvCur.fetchall()
         zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
         cursor.execute(zero,(idm_dec,))
         zero=cursor.fetchone()
-        c = csv.writer(open('data.csv','wb'))
-        for i in row:
-            c.writerow([i])
-        #    l=pprint.pformat(i)
-        #    print (l.decode('unicode-escape'))
+
+        #with codecs.open('data.csv','w','utf-8') as csvF:
+        #    c = UnicodeWriter(csvF,quoting=csv.QUOTE_ALL)
+        #    for x in csvRow:
+        #        c.writerows(str(x))
+            #c.writerows(row.keys())
+            #    l=pprint.pformat(i)
+            #    print (l.decode('unicode-escape'))
         #cursor.close()
 #        for i in zero:
 #            l=pprint.pformat(i)
@@ -153,8 +164,8 @@ def main():
         thisweekDistanceList=list(map(lambda x:x[u'距離'],thisweek))
         thisweekDistance=sum(thisweekDistanceList)+distance
         print thisweekDistance
-        todayDistance+=distance
-        thisweekDistance+=distance
+        #todayDistance+=distance
+        #thisweekDistance+=distance
         print("today's distance: "+str(todayDistance))
         print("distance thisweek: "+str(thisweekDistance))
 
@@ -189,8 +200,8 @@ def main():
         todaykcal=sum(todaykcalList)+kcal
         thisweekkcal=sum(thisweekkcalList)+kcal
 
-        todaykcal+=kcal
-        thisweekkcal+=kcal
+        #todaykcal+=kcal
+        #thisweekkcal+=kcal
         print ("today's calories: "+str(todaykcal))
         print("calories thisweek: "+str(thisweekkcal))
 
@@ -201,14 +212,18 @@ def main():
         totalDistance=row[0][u'総移動距離']+distance
         print ("totalDistance: "+str(totalDistance))
 
-        if hours<1:
-            zeroDistance=totalDistance-zero[u'総移動距離']
-            print("zero distance: "+str(zeroDistance))
-        else:
-            zeroDistance=0
 
         totalCalories=row[0][u'総消費カロリー']+kcal
         print ("totalCalories: "+str(totalCalories))
+
+        if hours<1:
+            zeroDistance=totalDistance-zero[u'総移動距離']
+            print("zero distance: "+str(zeroDistance))
+            zeroKcal=totalCalories-zero[u'総消費カロリー']
+            print("zero kcal: "+str(zeroKcal))
+        else:
+            zeroDistance=0
+            zeroKcal=0
 
         height=row[0][u'身長']
         weight=row[0][u'体重']
@@ -231,7 +246,6 @@ def main():
                 totalDistance=totalDistance-distance
                 distance=0
                 kcal=0
-                todaykcal=0
 
             cur.execute(insert,(str(idm_dec),str(cardNumber),nowtime,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
             connect.commit()
@@ -260,13 +274,19 @@ def main():
             printStr='{0},{1:0=3},{2},{3},{4},{5},{6},{7},{8},{9}'
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
-            todayDistance
+            #Today
+            todayDistance+=zeroDistance
+            todaykcal+=zeroKcal
+            thisweekDistance+=zeroDistance
+            thisweekkcal+=zeroKcal
+            totalDistance+=zeroDistance
+            totalCalories+=zeroKcal
             todayDistance=custom_round(todayDistance,2)
             todaykcal=custom_round(todaykcal,2)
-            thisweekDistance
+            #Thisweek
             thisweekDistance=custom_round(thisweekDistance,2)
             thisweekkcal=custom_round(thisweekkcal,2)
-            totalDistance=custom_round(totalDistance+zeroDistance,2)
+            totalDistance=custom_round(totalDistance,2)
             totalCalories=custom_round(totalCalories,2)
             print type(nowtime)
             printStr=printStr.format(nowtime,cardNumber,format_float(todayDistance),format_float(todaykcal),format_float(thisweekDistance),format_float(thisweekkcal),totalTimes,format_float(totalDistance),format_float(totalCalories),message)
