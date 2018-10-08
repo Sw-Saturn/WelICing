@@ -20,8 +20,14 @@ class ChangeHandler(FileSystemEventHandler):
         filepath = event.src_path
         filename = os.path.basename(filepath)
         print('%sを変更しました' % filename)
+        subprocess.call("sudo pkill chomium",shell=True)
+        time.sleep(1)
+        subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
+        print('lunched')
+        time.sleep(15)
         subprocess.call("sudo pkill chromium",shell=True)
         time.sleep(1)
+        print('killed')
         subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
 
     def on_deleted(self, event):

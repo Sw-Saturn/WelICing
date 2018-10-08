@@ -227,6 +227,7 @@ def main():
                 totalDistance=totalDistance-distance
                 distance=0
                 kcal=0
+                todaykcal=0
 
             cur.execute(insert,(str(idm_dec),str(cardNumber),nowtime,distance,kcal,totalHours,totalDistance,totalCalories,RasNum,counts,height,weight,age,sex))
             connect.commit()
@@ -246,6 +247,7 @@ def main():
             GPIO.output(22,0)
             raise
         if RasNum==1:
+            #subprocess.call("sudo rm -f /var/www/html/2018_procon_wellness/data.csv")
             s=serial.Serial("/dev/ttyUSB0",38400)
             nowtime=datetime.datetime.now().strftime('%Y年%m月%d日%H時%M分%S秒')
 
