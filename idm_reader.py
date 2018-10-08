@@ -13,6 +13,7 @@ from RPi import GPIO
 from dateutil.relativedelta import relativedelta
 import pprint
 import pickle
+import csv
 
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
 RasNum = 1
@@ -115,12 +116,15 @@ def main():
 
         # select
         stmt='SELECT * FROM `ikiiki` WHERE `ID` = %s ORDER BY `時間` DESC'
+        
         cursor.execute(stmt,(idm_dec,))
         row = cursor.fetchmany(2)
         zero='SELECT * FROM `ikiiki` WHERE `ID` = %s and `距離` =0 ORDER BY `時間` DESC'
         cursor.execute(zero,(idm_dec,))
         zero=cursor.fetchone()
-        #for i in row:
+        c = csv.writer(open('data.csv','wb'))
+        for i in row:
+            c.writerow([i])
         #    l=pprint.pformat(i)
         #    print (l.decode('unicode-escape'))
         #cursor.close()
