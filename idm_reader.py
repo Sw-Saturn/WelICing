@@ -192,7 +192,7 @@ def main():
                 continue
 
         counts=row[0][u'回数']
-        counts=counts+1
+        counts+=1
 
         kcal=calcCalories(hours,distance,row)
         todaykcalList=list(map(lambda x:x[u'消費カロリー'],today))
