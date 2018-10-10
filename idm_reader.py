@@ -275,12 +275,13 @@ def main():
             message=random.choice(messageList).encode('utf-8')
             time.sleep(1.7)
             #Today
-            todayDistance+=zeroDistance
-            todaykcal+=zeroKcal
-            thisweekDistance+=zeroDistance
-            thisweekkcal+=zeroKcal
-            totalDistance+=zeroDistance
-            totalCalories+=zeroKcal
+            if todayDistance!=0:
+                todayDistance+=zeroDistance
+                todaykcal+=zeroKcal
+                thisweekDistance+=zeroDistance
+                thisweekkcal+=zeroKcal
+                totalDistance+=zeroDistance
+                totalCalories+=zeroKcal
             todayDistance=custom_round(todayDistance,2)
             todaykcal=custom_round(todaykcal,2)
             #Thisweek
