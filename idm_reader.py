@@ -282,6 +282,9 @@ def main():
                 thisweekkcal+=zeroKcal
                 totalDistance+=zeroDistance
                 totalCalories+=zeroKcal
+            else:
+                continue
+
             todayDistance=custom_round(todayDistance,2)
             todaykcal=custom_round(todaykcal,2)
             #Thisweek
