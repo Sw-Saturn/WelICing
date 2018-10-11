@@ -1,0 +1,6 @@
+*.csv
+*.txt
+nov1/
+old/
+septem*/
+*.log
