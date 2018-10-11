@@ -27,6 +27,8 @@ class ChangeHandler(FileSystemEventHandler):
         print('lunched')
         #time.sleep(15)
         subprocess.call("sudo pkill chromium",shell=True)
+        subprocess.call("php /var/www/html/bingo/bingo/data_download_test.php &",shell=True)
+        subprocess.call("sudo cp ./demidu.csv /var/www/html/bingo/bingo/",shell=True)
         time.sleep(1)
         print('killed')
         subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
