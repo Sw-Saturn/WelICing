@@ -6,6 +6,7 @@ from watchdog.observers import Observer
 import os
 import time
 import subprocess
+import shutil
 
 target_dir = "/home/pi/procon29/FelicaReader/"
 
@@ -24,11 +25,11 @@ class ChangeHandler(FileSystemEventHandler):
         #time.sleep(1)
         #subprocess.call("php /var/www/html/2018_procon_wellness/data_download_S.php",shell=True)
         #subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
-        print('lunched')
         #time.sleep(15)
         subprocess.call("sudo pkill chromium",shell=True)
         subprocess.call("php /var/www/html/bingo/bingo/data_download_test.php &",shell=True)
-        subprocess.call("sudo cp ./demidu.csv /var/www/html/bingo/bingo/",shell=True)
+        shutil.copyfile("./demidu.csv","/var/www/html/bingo/bingo/demidu.csv")
+        #subprocess.call("sudo cp ./demidu.csv /var/www/html/bingo/bingo/",shell=True)
         time.sleep(1)
         print('killed')
         subprocess.call("/bin/sh /home/pi/procon29/FelicaReader/browser.sh",shell=True)
