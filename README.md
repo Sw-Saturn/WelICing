@@ -7,7 +7,8 @@
     - :file_folder: AS-289R2/
 
 - フロントエンド 
-    - :file_folder: html/
+    - :file_folder: bingo/
+    - :file_folder: 2018_procon_wellness/
 
 ***
 nfcpyのバージョンは0.9.1
