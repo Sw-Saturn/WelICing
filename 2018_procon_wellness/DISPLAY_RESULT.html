@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Display_Result</title>
+  <link rel="stylesheet" type="text/css" href="DISPLAY_RESULT_STYLE.css">
+
+  <script src="jquery-3.3.1.min.js"></script>
+  <script src="jquery.xdomainajax.js"></script>
+  <link rel="stylesheet" type="text/css" href="JQuery/CountDown/css/jquery.countdown.css">
+  <script type="text/javascript" src="JQuery/CountDown/js/jquery.plugin.js"></script>
+  <script type="text/javascript" src="JQuery/CountDown/js/jquery.countdown.js"></script>
+  <script type="text/javascript" src="JQuery/CountDown/js/jquery.countdown.min.js"></script>
+</head>
+
+<body>
+  <!--<script type="text/javascript" src="js/ajax.js"></script>
+  <script>
+
+    var aryJSON = JSON.stringify([1,2]);
+        $.ajax({
+        async: true,
+        type: "POST",
+        url: "http://ras1.local/2018_procon_wellness/data_download_S.php",
+
+        data: { Ary : aryJSON }
+    }).done(function( msg ) {});
+
+  </script>
+  -->
+  <div class="content-wrapper">
+    <div class="identity">
+      <div class="col">
+        <div class="icon">
+          <img class="inner" src="img/WelICing_slash_white_all4.png">
+        </div>
+      </div>
+      <div class="col">
+        <div class="User">
+          <div id="UserID" class="inner"></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="circle">
+          <div id="timeCount" class="inner"></div>
+        </div>
+      </div>
+    </div>
+    <div class="BorderLine"></div>
+
+    <!-- グラフsを覆うmain -->
+    <div class="main">
+      <!-- 円グラフ -->
+      <div class="content graph graph-doughnut">
+        <div class="graph title graph-doughnut-title">1週間歩行距離</div>
+        <div id="myDoughnut-distance_weekly_sum_thisWeek"></div>
+        <div class="myDoughnut-distance_weekly_sum_unit"> KM</div>
+        <canvas id="myDoughnutChart" style="position:relative;width:2000px; height:2000px;"></canvas>
+        <div class="myDoughnut-achievement-text">
+          <div id="myDoughnut-cheer-text"></div>
+          <div id="myDoughnut-distance_rate-text"></div>
+        </div>
+      </div>
+      <!-- 棒グラフ -->
+      <div class="content graph graph-bar">
+        <div class="graph title graph-bar-title">1週間歩行グラフ</div>
+        <canvas id="myBarChart" style="position:relative;width:2800px; height:2000px;"></canvas>
+      </div>
+      <!-- カロリー -->
+      <div class="content graph calorie-content">
+        <div class="graph title calorie-title">本日消費カロリー</div>
+        <div id="calorie-today_sum_thisWeek-text" class="calorie-text"></div>
+        <div class="calorie-today_example">
+          <div class="graph title calorie-today_example-title">ーー食品例ーー</div>
+          <ul>
+            <li id="calorie-today_example-text1" class="calorie-text calorie_example"></li>
+            <li id="calorie-today_example-text2" class="calorie-text calorie_example"></li>
+            <li id="calorie-today_example-text3" class="calorie-text calorie_example"></li>
+            <li id="calorie-today_example-text4" class="calorie-text calorie_example"></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- main終了 -->
+  </div><!-- content-wrapper終了 -->
+  <script type="text/javascript" src="./js/CSV_READER.js"></script>
+  <script type="text/javascript" src="./js/IDENTITY.js"></script>
+  <script type="text/javascript" src="./js/DISTANCE_WEEKLY.js"></script>
+  <script type="text/javascript" src="./js/chart/Chart.js"></script>
+  <script type="text/javascript" src="./js/DATE_GET.js"></script>
+  <script type="text/javascript" src="./js/chart/GRAGH_BAR.js"></script>
+  <script type="text/javascript" src="./js/CALORIE.js"></script>
+  <script type="text/javascript" src="./js/COUNTDOWN.js"></script>
+
+  <script>
+    UserID(); //ユーザーID表示
+    Distance_Weekly(); //歩行距離
+    Gragh_Bar(); //棒グラフ
+    Calorie_Calc(); //カロリー
+
+    function ChangeCurrentPage(){
+            /* 切り替えるページ */
+        setTimeout(function(){
+                    document.location.href = "http://localhost/rpg/index.html";
+                },7000);
+    }
+
+
+    ChangeCurrentPage();
+  </script>
+</body>
+
+</html>

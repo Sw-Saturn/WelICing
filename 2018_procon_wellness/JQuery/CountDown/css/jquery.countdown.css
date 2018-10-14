@@ -1,0 +1,73 @@
+/* jQuery Countdown styles 2.0.0. */
+.is-countdown {
+	/* border: 1px solid #ccc; */
+	/* background-color: #eee; */
+}
+.countdown-rtl {
+	direction: rtl;
+}
+.countdown-holding span {
+	color: #888;
+}
+.countdown-row {
+	clear: both;
+	width: 100%;
+	padding: 0px 2px;
+	text-align: center;
+}
+.countdown-show1 .countdown-section {
+	width: 98%;
+}
+.countdown-show2 .countdown-section {
+	width: 48%;
+}
+.countdown-show3 .countdown-section {
+	width: 32.5%;
+}
+.countdown-show4 .countdown-section {
+	width: 24.5%;
+}
+.countdown-show5 .countdown-section {
+	width: 19.5%;
+}
+.countdown-show6 .countdown-section {
+	width: 16.25%;
+}
+.countdown-show7 .countdown-section {
+	width: 14%;
+}
+.countdown-section {
+	display: block;
+	float: left;
+	font-size: 75%;
+	text-align: center;
+	margin-top: -2.8%;
+	margin-left: 36%;
+	/* margin-top: 7.5%; */
+}
+.countdown-amount {
+    font-size: 300%;
+		font-family: "Arial";
+		/*背景色にグラデーションを指定*/
+		/* background: -webkit-linear-gradient(0deg, #40E0D0, yellow,#77bee0); */
+		/* background: -webkit-linear-gradient(0deg, yellow, #86FDE8); */
+		/* background: -webkit-linear-gradient(0deg, #ACB6E5, #86FDE8); */
+		/*テキストでくり抜く*/
+  	/* -webkit-background-clip: text; */
+		/*くり抜いた部分は背景を表示*/
+  	/* -webkit-text-fill-color: transparent; */
+		/* color: red; */
+		color: #655f5f;
+		font-weight: bolder;
+		vertical-align: middle;
+		font-style: oblique;
+		padding: 0.5%;
+}
+.countdown-period {
+    /* display: block; */
+		display: none;
+}
+.countdown-descr {
+	display: block;
+	width: 100%;
+}
