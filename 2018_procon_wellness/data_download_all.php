@@ -16,7 +16,7 @@ try{
 	$bingo_pdo=new PDO($dsn3, $user, $password);
 
 	/*　テキストファイルからIDを読み取る　*/
-	$text= file_get_contents('test.txt');
+	$text= file_get_contents('/home/pi/procon29/FelicaReader/idm.txt');
 	var_dump($text);
 //	$text = mb_strimwidth($text, 1, 17);
 	var_dump($text);
