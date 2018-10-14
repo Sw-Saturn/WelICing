@@ -769,11 +769,11 @@ phina.define("Bingo_Scene",{
         function stoptimer(){
             // アニメをストップする
             clearInterval(timer);    
-            /*
+            
             setTimeout(function(){
                 ChangeCurrentPage();
             },3000);
-            */
+            
         }
     },
 })
