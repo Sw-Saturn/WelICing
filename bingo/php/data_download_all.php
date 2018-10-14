@@ -1,8 +1,3 @@
-
-<html>
-<head><title>PHP TEST</title></head>
-<body>
-
 <?php
 header('Access-Control-Allow-Origin: *');
 $dsn1 = 'mysql:dbname=ikiiki;host=153.126.194.52';
@@ -527,6 +522,3 @@ header('Content-Type: text/html; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
 ?>
-
-</body>
-</html>
