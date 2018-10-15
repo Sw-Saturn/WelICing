@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>SCREEN SAVER</title>
+        <style>
+            .logo{
+                position: absolute;
+                left: 200px;
+                top: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="LOGO" class="logo">
+                <img src="assets/images/WelICing.png" width=250% height=250%>        
+        </div>
+        <script>
+            // 画像サイズ
+            IMG_WIDTH  = 348*2.5;
+            IMG_HEIGHT = 135*2.5;
+
+            // スクリーンサイズ
+            //SCR_WIDTH  = document.body.clientWidth;
+            //SCR_HEIGHT = document.body.clientHeight;
+
+            SCR_WIDTH  = window.innerWidth;
+            SCR_HEIGHT = window.innerHeight;
+ 
+            // 現在位置
+            IMG_X = 0;
+            IMG_Y = 0;
+
+            // 移動可能座標(左上座標)
+            IMG_Xs = 0;
+            IMG_Ys = 0;
+
+            // 移動可能座標(右下座標)
+            IMG_Xe = SCR_WIDTH  - IMG_WIDTH;
+            IMG_Ye = SCR_HEIGHT - IMG_HEIGHT;
+            
+            // 移動量
+            MoveX = 0;
+            MoveY = 0;
+
+            // 乱数
+            RAN_MIN = 10;
+            RAN_MAX = 7;
+
+            // 繰り返し感覚
+            SPEED = 50;
+
+            console.log(SCR_WIDTH,SCR_HEIGHT);
+            function ReflectImg(){
+                myObj = document.getElementById("LOGO");
+                // 移動方向を決める
+                // X座標で左端に来た時
+                if(IMG_X <= IMG_Xs) MoveX = Math.floor(Math.random()*RAN_MAX) + RAN_MIN;
+                // X座標で右端に来た時
+                if(IMG_X >= IMG_Xe) MoveX = (Math.floor(Math.random()*RAN_MAX) + RAN_MIN)*(-1);
+                // Y座標で上端に来た時
+                if(IMG_Y <= IMG_Ys) MoveY = Math.floor(Math.random()*RAN_MAX) + RAN_MIN;
+                // Y座標で下端に来た時
+                if(IMG_Y >= IMG_Ye) MoveY = (Math.floor(Math.random()*RAN_MAX) + RAN_MIN)*(-1);
+
+                // 画像を移動させる
+                IMG_X = IMG_X + MoveX;
+
+                IMG_Y = IMG_Y + MoveY;
+
+                myObj.style.left = IMG_X + "px";
+                myObj.style.top  = IMG_Y + "px";
+
+                console.log("Running");
+            }
+
+            // 0.1秒周期で動かす
+            setInterval("ReflectImg()",SPEED);
+
+        </script>
+    </body>
+</html>

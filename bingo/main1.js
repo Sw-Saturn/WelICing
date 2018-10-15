@@ -1464,7 +1464,7 @@ function DB_download(){
             //alert(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_DOWNLOAD_PATH, true);
+    xhttpreq.open("POST", PHP_DOWNLOAD_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send("");
 }
@@ -1482,7 +1482,7 @@ function update_mypoint(){
             //alert(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_UPDATE_POINTMY_PATH, true);
+    xhttpreq.open("POST", PHP_UPDATE_POINTMY_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send(json);
 }
@@ -1499,7 +1499,7 @@ function update_allpoint(){
             ////(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_UPDATE_POINTALL_PATH, true);
+    xhttpreq.open("POST", PHP_UPDATE_POINTALL_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send(json);
 }
@@ -1516,7 +1516,7 @@ function update_bingocard(){
             //alert(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_UPDATE_BINGOCARD_PATH, true);
+    xhttpreq.open("POST", PHP_UPDATE_BINGOCARD_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send(json);
 }
@@ -1533,7 +1533,7 @@ function update_bingoclear(){
             //alert(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_UPDATE_BINGOCLEAR_PATH, true);
+    xhttpreq.open("POST", PHP_UPDATE_BINGOCLEAR_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send(json);
 }
@@ -1550,7 +1550,7 @@ function update_bingoall(){
             //alert(xhttpreq.responseText);
         }
     };
-    xhttpreq.open("POST", PHP_UPDATE_BINGOALL_PATH, true);
+    xhttpreq.open("POST", PHP_UPDATE_BINGOALL_PATH, false);
     xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
     xhttpreq.send(json);
 }

@@ -28,6 +28,24 @@
 
   </script>
   -->
+<script>
+var PHP_DOWNLOAD_PATH = "http://ras1.local/2018_procon_wellness/data_download_all.php";
+// データベースからダウンロードする
+function DB_download(){
+    // XMLHttpRequestによるアップロード処理
+    var xhttpreq = new XMLHttpRequest();
+    xhttpreq.onreadystatechange = function() {
+        if (xhttpreq.readyState == 4 && xhttpreq.status == 200) {
+            //alert(xhttpreq.responseText);
+        }
+    };
+    xhttpreq.open("POST", PHP_DOWNLOAD_PATH, false);
+    xhttpreq.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xhttpreq.send();
+    //xhhtpreq.abort();
+}
+DB_download();
+</script>
   <div class="content-wrapper">
     <div class="identity">
       <div class="col">
