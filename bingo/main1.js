@@ -211,7 +211,7 @@ phina.define("Bingo_Scene",{
             fontSize: 170,
         })
         .addChildTo(this.baseLayer)
-        .setPosition(this.width*0.4, 90);
+        .setPosition(this.width*0.4, 80);
 
         // 点滅アニメ
         var chg = false;
