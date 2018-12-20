@@ -116,7 +116,7 @@ def main():
         #host=ik1-333-26548.vs.sakura.ne.jp
         #subprocess.call("php /var/www/html/2018_procon_wellness/data_download_S.php &",shell=True)
         #subprocess.call("sudo cp /home/pi/procon29/FelicaReader/data.csv /var/www/html/2018_procon_wellness/data.csv &",shell=True)
-        connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.194.52', database='ikiiki', charset='utf8')
+        connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.191.37', database='ikiiki', charset='utf8')
         cursor = connect.cursor(buffered=True,dictionary=True)
         #csvCur=connect.cursor(buffered=True)
         # select
