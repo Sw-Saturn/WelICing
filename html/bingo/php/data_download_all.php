@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-$dsn1 = 'mysql:dbname=ikiiki;host=153.126.194.52';
-$dsn3 = 'mysql:dbname=bingo;host=153.126.194.52';
+$dsn1 = 'mysql:dbname=ikiiki;host=153.126.191.37';
+$dsn3 = 'mysql:dbname=bingo;host=153.126.191.37';
 $user = 'user1';
 $password = 'Sotuken17-Feli';
 
