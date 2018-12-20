@@ -26,7 +26,7 @@ def calcDistance(data,number):
     oldNumber=data[0][u'端末番号']
     sum=oldNumber+number
     if sum==3:
-        return 1
+        return 6.6
     elif sum==4:
         return 1.1
     elif sum==5:
@@ -171,7 +171,8 @@ def main():
 
         now = datetime.datetime.now()
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
-        hours=calcTime(now,row)
+        #hours=calcTime(now,row)
+        hours=3
         print("hours: "+str(hours))
         if hours<1:
             if RasNum==row[0][u'端末番号']:
