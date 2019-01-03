@@ -17,10 +17,12 @@ from dateutil.relativedelta import relativedelta
 import pprint
 import pickle
 import unicodecsv as csv
+import eel
 
 finIDm = 77408918390023174  #010101129C17E006 [ICOCA]
 RasNum = 1
 
+eel.init("html")
 
 def calcDistance(data,number):
     new=data[0][u'距離']
@@ -313,4 +315,5 @@ def main():
 
 
 if __name__ == '__main__':
+    eel.start("2018_procon_wellness/DISPLAY_RESULT.html")
     main()
