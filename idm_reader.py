@@ -26,7 +26,7 @@ def calcDistance(data,number):
     oldNumber=data[0][u'端末番号']
     sum=oldNumber+number
     if sum==3:
-        return 1
+        return 6.6
     elif sum==4:
         return 1.1
     elif sum==5:
@@ -116,7 +116,7 @@ def main():
         #host=ik1-333-26548.vs.sakura.ne.jp
         #subprocess.call("php /var/www/html/2018_procon_wellness/data_download_S.php &",shell=True)
         #subprocess.call("sudo cp /home/pi/procon29/FelicaReader/data.csv /var/www/html/2018_procon_wellness/data.csv &",shell=True)
-        connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.194.52', database='ikiiki', charset='utf8')
+        connect = mysql.connector.connect(user='user1', password='Sotuken17-Feli', host='153.126.191.37', database='ikiiki', charset='utf8')
         cursor = connect.cursor(buffered=True,dictionary=True)
         #csvCur=connect.cursor(buffered=True)
         # select
@@ -171,7 +171,8 @@ def main():
 
         now = datetime.datetime.now()
         nowtime = now.strftime('%Y-%m-%d %H:%M:%S')
-        hours=calcTime(now,row)
+        #hours=calcTime(now,row)
+        hours=3
         print("hours: "+str(hours))
         if hours<1:
             if RasNum==row[0][u'端末番号']:
